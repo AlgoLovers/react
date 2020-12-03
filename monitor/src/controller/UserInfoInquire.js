@@ -14,13 +14,13 @@ const UserInfoInquire = (props) => {
     const getAllUsers = (data) => {
         allUsersDispatch({type:'GET_ALL_USERS', payload:data});
     }
+    const allUsersLoading = useUserInfosFetch(getAllUsers, 'http://10.112.164.147:8080/api/getAllUsers');
+    // {"users":["1Q2W3E4R","5T6Y7U8I","4R3E2W1Q","8I7U6Y5T","QAWSEDRF","TGYHUJIK","IKUJYHTG","RFEDWSQA"]}
 
+/*
     const getUserInfos = (ownerData, renterData) => {
         userDetailDispatch({type:'GET_USER_DETAIL', payload:{owner: ownerData, renter: renterData}});
     }
-
-    const allUsersLoading = useUserInfosFetch(getAllUsers, 'http://10.112.164.147:8080/api/getAllUsers');
-    // {"users":["1Q2W3E4R","5T6Y7U8I","4R3E2W1Q","8I7U6Y5T","QAWSEDRF","TGYHUJIK","IKUJYHTG","RFEDWSQA"]}
 
     const GetUserDetail = () => {
         if(selected.did != null) {
@@ -42,6 +42,27 @@ const UserInfoInquire = (props) => {
 
         getUserInfos(ownerData, renterData);
     }
+*/
+
+    const getOwnerInfos = (data) =>  {
+        userDetailDispatch({type:'GET_OWNER_INFOS', payload:data});
+    }
+    const getRenterInfos = (data) =>  {
+        userDetailDispatch({type:'GET_RENTER_INFOS', payload:data});
+    }
+    const GetOwnerInfos = () => {
+        if(selected.did != null) {
+            const url = `http://10.112.164.147:8080/api/getOwnerInfos?owner=${selected.did}`;
+            const loading = useUserInfosFetch(getOwnerInfos, url);
+        }
+    }
+
+    const GetRenterInfos = () => {
+        if(selected.did != null) {
+            const url = `http://10.112.164.147:8080/api/getRenterInfos?renter=${selected.did}`;
+            const loading = useUserInfosFetch(getRenterInfos, url);
+        }
+    }
 
     useEffect( () => {
         console.log('allUsers 가 랜더링 되었습니다.', allUsers);
@@ -49,7 +70,8 @@ const UserInfoInquire = (props) => {
 
     useEffect( () => {
         console.log('selected 가 랜더링 되었습니다.', selected);
-        GetUserDetail();
+        GetOwnerInfos();
+        GetRenterInfos();
     }, [selected]);
 
     useEffect( () => {
